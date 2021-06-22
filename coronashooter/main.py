@@ -7,7 +7,9 @@ from pygame.locals import (DOUBLEBUF,
                            K_RIGHT,
                            QUIT,
                            K_ESCAPE,
-                           K_SPACE
+                           K_SPACE,
+                           K_UP,
+                           K_DOWN
                            )
 from fundo import Fundo
 from elementos import ElementoSprite
@@ -15,7 +17,7 @@ import random
 
 nivel = 1
 class Jogo:
-    def __init__(self, size=(800, 800), fullscreen=False):
+    def __init__(self, size=(600, 600), fullscreen=False):
         self.elementos = {}
         pygame.init()
         self.screen = pygame.display.set_mode(size)
