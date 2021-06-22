@@ -28,7 +28,7 @@ class Jogo:
 
         self.screen_size = self.screen.get_size()
         pygame.mouse.set_visible(0)
-        pygame.display.set_caption('Corona Shooter')
+        pygame.display.set_caption('The Corona Shooter')
         self.run = True
 
     def atualiza_elementos(self, dt):
