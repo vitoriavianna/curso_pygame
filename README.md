@@ -83,6 +83,6 @@ Após estas cinco fases de desenvolvimento, temos um jogo funcional. Mas ainda e
 - Adicionar nível(is) chefão.
 - Adicionar trilha sonora e efeitos sonoros
 - Adicionar efeitos de explosão
-- etc.
+- etc..
 
 # Fim
