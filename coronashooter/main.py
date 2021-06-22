@@ -61,6 +61,16 @@ class Jogo:
             if key == K_SPACE:
                 self.interval = 0
                 self.jogador.atira(self.elementos["tiros"])
+        #comandos movimento teclas
+            if key == K_LEFT:
+                self.run.vel_left
+            if key == K_RIGHT:
+                self.run.vel_right
+            if key == K_UP:
+                self.run.vel_up
+            if key == K_DOWN:
+                self.run.vel_down
+                
 
     def loop(self):
         clock = pygame.time.Clock()
@@ -148,7 +158,41 @@ class Tiro(ElementoSprite):
         if list is not None:
             self.add(list)
             
-            
+class Player(Nave):
+    def __init__(self, position, lives=10, image=None, new_size=[83, 248]):
+        if not image:
+            image = "seringa.png"
+        super().__init__(position, lives, [0, 0], image, new_size)
+        self.pontos = 0
+
+    def atualiza(self, dt):
+        move_speed = (self.speed[0] * dt / 16,
+                      self.speed[1] * dt / 16)
+        self.rect = self.rect.move(move_speed)
+
+    def get_pos(self):
+        return (self.rect.center[0], self.rect.top)
+    
+    
+    @property
+    def morto(self):
+        return self.get_lives() == 0
+
+    def vel_up(self):
+        speed = self.get_speed()
+        self.set_speed((speed[0], speed[1] - self.acceleration[1]))
+
+    def vel_down(self):
+        speed = self.get_speed()
+        self.set_speed((speed[0], speed[1] + self.acceleration[1]))
+
+    def vel_left(self):
+        speed = self.get_speed()
+        self.set_speed((speed[0] - self.acceleration[0], speed[1]))
+
+    def vel_right(self):
+        speed = self.get_speed()
+        self.set_speed((speed[0] + self.acceleration[0], speed[1]))
 
 if __name__ == '__main__':
     J = Jogo()
