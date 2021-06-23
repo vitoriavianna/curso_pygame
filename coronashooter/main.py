@@ -87,13 +87,18 @@ class Jogo:
            
         if nivel == 1: 
             self.elementos['virii'] = [pygame.sprite.RenderPlain(Virus([120, 50]))]
+            pygame.mixer.music.load("Nivel 1.wav")
         if nivel == 2: 
             self.elementos['virii'] = [pygame.sprite.RenderPlain(Virus([120, 50]))]
             self.elementos['virii2'] = [pygame.sprite.RenderPlain(Virus2([500, 70]))]
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load("Nivel 2.wav")
         if nivel == 3:
             self.elementos['virii'] = [pygame.sprite.RenderPlain(Virus([120, 50]))]
             self.elementos['virii2'] = [pygame.sprite.RenderPlain(Virus2([500, 70]))]
             self.elementos['virii3'] = [pygame.sprite.RenderPlain(Virus3([300, 300]))]
+            pygame.mixer.music.stop()
+            pygame.mixer.music.load("Nivel 3.wav")
 
         self.nave = pygame.sprite.RenderPlain(Nave([200, 400], 5))
         while self.run:
@@ -127,10 +132,11 @@ class Nave(ElementoSprite):
         s = list(self.get_speed())
         s[1] *= 2
         Tiro(self.get_pos(), s, image, lista_de_tiros)
+        pygame.mixer.Sound("Atirar.wav")
 
 #defini o virus 1 com 1 vida
 class Virus(Nave):
-    def __init__(self, position, lives=0, speed=None, image=None, size=(100, 100)):
+    def __init__(self, position, lives=1, speed=None, image=None, size=(100, 100)):
         if not image:
             image = "virus1.png"
         super().__init__(position, lives, speed, image, size)
@@ -159,7 +165,7 @@ class Tiro(ElementoSprite):
             self.add(list)
             
 class Player(Nave):
-    def __init__(self, position, lives=10, image=None, new_size=[83, 248]):
+    def __init__(self, position, lives=5, image=None, new_size=[83, 248]):
         if not image:
             image = "seringa.png"
         super().__init__(position, lives, [0, 0], image, new_size)
