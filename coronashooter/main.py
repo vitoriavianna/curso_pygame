@@ -197,7 +197,7 @@ class Player(Nave):
 if __name__ == '__main__':
     J = Jogo()
     J.loop()
-=======
+
 import pygame
 from pygame.locals import (DOUBLEBUF,
                            FULLSCREEN,
