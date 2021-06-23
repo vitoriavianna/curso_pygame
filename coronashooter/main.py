@@ -1,4 +1,5 @@
 import pygame
+import os
 from pygame.locals import (DOUBLEBUF,
                            FULLSCREEN,
                            KEYDOWN,
@@ -13,13 +14,15 @@ from elementos import ElementoSprite
 import random
 
 
+
 class Jogo:
-    def __init__(self, size=(1000, 1000), fullscreen=False):
+    def __init__(self, size=(600, 600), fullscreen=False):
         self.elementos = {}
         pygame.init()
         self.tela = pygame.display.set_mode(size)
         self.fundo = Fundo()
         self.jogador = None
+        # self.musica = musica
         self.interval = 0
         self.nivel = 0
         flags = DOUBLEBUF
@@ -28,7 +31,7 @@ class Jogo:
 
         self.screen_size = self.tela.get_size()
         pygame.mouse.set_visible(0)
-        pygame.display.set_caption('Corona Shooter')
+        pygame.display.set_caption('The Corona Shooter')
         self.run = True
 
     def manutenção(self):
@@ -43,14 +46,40 @@ class Jogo:
     def muda_nivel(self):
         xp = self.jogador.get_pontos()
         if xp > 10 and self.level == 0:
-            self.fundo = Fundo("tile2.png")
+            self.fundo = Fundo("tile2")
             self.nivel = 1
             self.jogador.set_lives(self.jogador.get_lives() + 3)
         elif xp > 50 and self.level == 1:
-            self.fundo = Fundo("tile3.png")
+            self.fundo = Fundo("tile2")
             self.nivel = 2
             self.jogador.set_lives(self.player.get_lives() + 6)
+            
+    def troca_musica_fundo(self):
+        
+        musica = "Fase1.wav"
+        musica = os.path.join("sons", musica)
+        musica = pygame.mixer.music.load(musica)
+        
+        if self.nivel == 0:  
+            pygame.mixer.init()
+            musica = "Fase 1.wav"
+            pygame.mixer.music.play(-1)
+        elif self.nivel == 1:
+            pygame.mixer.music.stop()
+            pygame.mixer.quit()
+                        
+            pygame.mixer.init()
+            musica = "Fase 2.wav"
+            pygame.mixer.music.play(-1)
+        elif self.nivel == 2:
+            pygame.mixer.music.stop()
+            pygame.mixer.quit()
+            
+            pygame.mixer.init()
+            musica = "Fase 3.wav"
+            pygame.mixer.music.play(-1)
 
+            
     def atualiza_elementos(self, dt):
         self.fundo.update(dt)
         for v in self.elementos.values():
@@ -135,6 +164,7 @@ class Jogo:
 
             self.trata_eventos()
             self.ação_elemento()
+            self.troca_musica_fundo()
             self.manutenção()
             # Atualiza Elementos
             self.atualiza_elementos(dt)
@@ -142,7 +172,7 @@ class Jogo:
             # Desenhe no back buffer
             self.desenha_elementos()
             pygame.display.flip()
-
+            
 
 class Nave(ElementoSprite):
     def __init__(self, position, lives=0, speed=[0, 0], image=None, new_size=[83, 248]):
@@ -199,21 +229,12 @@ class Nave(ElementoSprite):
 class Virus(Nave):
     def __init__(self, position, lives=1, speed=None, image=None, size=(100, 100)):
         if not image:
-            image = "virus.png"
+            image = "virus1.png"
         super().__init__(position, lives, speed, image, size)
 
 
 class Jogador(Nave):
-    """
-    A classe Player é uma classe derivada da classe GameObject.
-       No entanto, o personagem não morre quando passa da borda, este só
-    interrompe o seu movimento (vide update()).
-       E possui experiência, que o fará mudar de nivel e melhorar seu tiro.
-       A função get_pos() só foi redefinida para que os tiros não saissem da
-    parte da frente da nave do personagem, por esta estar virada ao contrário
-    das outras.
-    """
-
+ 
     def __init__(self, position, lives=10, image=None, new_size=[83, 248]):
         if not image:
             image = "seringa.png"
@@ -283,7 +304,7 @@ class Jogador(Nave):
 class Tiro(ElementoSprite):
     def __init__(self, position, speed=None, image=None, list=None):
         if not image:
-            image = "tiro.png"
+            image = "gota.png"
         super().__init__(image, position, speed)
         if list is not None:
             self.add(list)
